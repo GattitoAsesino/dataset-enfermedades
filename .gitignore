@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Data — raw and processed images are large and reproducible from manifest
+data/raw/
+data/processed/
+data/cache/
+
+# Derived YOLO dataset (regenerable via scripts/make_yolo.py)
+dataset/
+
+# Training runs (artifacts; keep only summary plots committed manually if needed)
+runs/
+runs_train.log
+
+# Downloaded pretrained weights (regenerable, big binaries)
+yolo*.pt
+!uppa_v1_yolo11n.pt   # keep our final trained model (5.5 MB)
+
+# Unpacked weights archive (we keep the .pt file, not the unpickled bytes)
+uppa_v1_yolo11n/
+
+# Bundled tarballs and extracted bundle dirs (not for git)
+*.tar
+*.tar.gz
+uppa-v1-bundle/
+uppa-*-bundle/
+
+# Misc local files (business plan, screenshots, branding)
+Memoria Tecnica.pdf
+Pasted image.png
+logo*.svg
+paleta.css
+
+# Reports — keep markdown reports, exclude generated HTML / images
+reports/review_*.html
+reports/sample_*.html
+reports/*.log
+reports/*.png
+reports/*.jpg
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Kaggle credentials
+kaggle.json
+.kaggle/
+
+# Allow manifests, configs, and key model artifacts to be tracked
+!data/manifest.csv
+!data/manifest_deduped.csv
+!data/manifest_processed.csv
+!data/splits/*.csv
