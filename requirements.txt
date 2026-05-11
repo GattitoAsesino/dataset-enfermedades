@@ -1,0 +1,7 @@
+requests>=2.31
+pillow>=10.0
+imagehash>=4.3
+pyyaml>=6.0
+pandas>=2.0
+tqdm>=4.66
+scikit-learn>=1.3

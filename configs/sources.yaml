@@ -1,0 +1,70 @@
+# Source configuration for Úppa moho verde dataset v1
+#
+# Two classes:
+#   sano        -> Agaricus bisporus, healthy (no visible mold)
+#   moho_verde  -> Trichoderma spp. (green molds; aggressivum is the main pathogen
+#                  on Agaricus, but harzianum/viride/atroviride share the visual
+#                  signature of green sporulation that the model needs to learn)
+
+classes:
+  - sano
+  - moho_verde
+
+# Per-class taxa to query.
+# Note: iNaturalist does NOT have T. aggressivum as a species — we fall back
+# to genus Trichoderma plus the green-spored species that share the visual
+# signature. GBIF has all species directly.
+taxa:
+  sano:
+    gbif:
+      - { name: "Agaricus bisporus", taxon_key: 5243447 }
+    inaturalist:
+      - { name: "Agaricus bisporus", taxon_id: 61395 }
+    common_names: ["champiñón", "button mushroom", "white mushroom"]
+  moho_verde:
+    gbif:
+      - { name: "Trichoderma aggressivum", taxon_key: 5251368 }  # primary pathogen on A. bisporus
+      - { name: "Trichoderma harzianum",   taxon_key: 5251352 }  # same visual signature
+      - { name: "Trichoderma viride",      taxon_key: 5251340 }
+    inaturalist:
+      - { name: "Trichoderma",          taxon_id: 352744 }   # genus; broadest recall
+      - { name: "Trichoderma harzianum", taxon_id: 352596 }
+      - { name: "Trichoderma viride",    taxon_id: 352599 }
+
+# Per-source pull limits (images, not observations)
+limits:
+  inaturalist:
+    sano: 1500
+    moho_verde: 1500
+    per_page: 200
+    photo_licenses: ["cc0", "cc-by", "cc-by-nc"]   # exclude all-rights-reserved
+  gbif:
+    sano: 1500
+    moho_verde: 1500
+    per_page: 100
+    media_type: "StillImage"
+  mushroom_observer:
+    sano: 1000
+    moho_verde: 1000
+    per_page: 100
+  wikimedia:
+    sano: 200
+    moho_verde: 200
+  kaggle:
+    enabled: false   # requires ~/.kaggle/kaggle.json
+    datasets: []     # populated at runtime by listing search results
+
+# Image acceptance rules
+image_rules:
+  min_width: 224
+  min_height: 224
+  max_bytes: 25_000_000
+  accepted_mimetypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+
+# Polite networking
+http:
+  user_agent: "uppa-dataset-builder/0.1 (research; contact: ni.dael92@gmail.com)"
+  timeout_seconds: 30
+  rate_limit_seconds: 1.0     # 1 req/sec base
+  retries: 3
+  backoff_seconds: 2.0
